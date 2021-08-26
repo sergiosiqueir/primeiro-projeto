@@ -1,0 +1,113 @@
+             PGM
+
+             DCL        VAR(&FILIAL) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&LEN) TYPE(*DEC) LEN(15 5) VALUE(500)
+             DCL        VAR(&LIBRARY1) TYPE(*CHAR) LEN(11) +
+                          VALUE('PSI62')
+
+             DCL        VAR(&LIBRARY2) TYPE(*CHAR) LEN(11) +
+                          VALUE('MOD62')
+
+             MONMSG     MSGID(CPF2208)
+
+ F1200:      CHGVAR     VAR(&FILIAL) VALUE('1200')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1401:      CHGVAR     VAR(&FILIAL) VALUE('1401')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F0701:      CHGVAR     VAR(&FILIAL) VALUE('0701')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1088:      CHGVAR     VAR(&FILIAL) VALUE('1088')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1400:      CHGVAR     VAR(&FILIAL) VALUE('1400')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1445:      CHGVAR     VAR(&FILIAL) VALUE('1445')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1500:      CHGVAR     VAR(&FILIAL) VALUE('1500')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1600:      CHGVAR     VAR(&FILIAL) VALUE('1600')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1624:      CHGVAR     VAR(&FILIAL) VALUE('1624')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1635:      CHGVAR     VAR(&FILIAL) VALUE('1635')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1640:      CHGVAR     VAR(&FILIAL) VALUE('1640')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1673:      CHGVAR     VAR(&FILIAL) VALUE('1673')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1736:      CHGVAR     VAR(&FILIAL) VALUE('1736')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1760:      CHGVAR     VAR(&FILIAL) VALUE('1760')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1778:      CHGVAR     VAR(&FILIAL) VALUE('1778')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1792:      CHGVAR     VAR(&FILIAL) VALUE('1792')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1875:      CHGVAR     VAR(&FILIAL) VALUE('1875')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1877:      CHGVAR     VAR(&FILIAL) VALUE('1877')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1887:      CHGVAR     VAR(&FILIAL) VALUE('1887')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1895:      CHGVAR     VAR(&FILIAL) VALUE('1895')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1941:      CHGVAR     VAR(&FILIAL) VALUE('1941')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ F1999:      CHGVAR     VAR(&FILIAL) VALUE('1999')
+             CALL       PGM(DASHBBOSS/GERACSVC) PARM(&FILIAL)
+             DLYJOB     DLY(1)
+
+ FIM:        CHGVAR     VAR(&FILIAL) VALUE('1200')
+             CHGVAR     VAR(%SST(&LIBRARY1 6 4)) VALUE(&FILIAL)
+             CHGVAR     VAR(%SST(&LIBRARY2 6 4)) VALUE(&FILIAL)
+
+             ADDLIBLE   LIB(&LIBRARY1)
+             MONMSG     MSGID(CPF2104)
+             MONMSG     MSGID(CPF2103)
+
+             ADDLIBLE   LIB(&LIBRARY2)
+             MONMSG     MSGID(CPF2104)
+             MONMSG     MSGID(CPF2103)
+
+             ENDPGM

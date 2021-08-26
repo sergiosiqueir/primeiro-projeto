@@ -1,0 +1,12 @@
+             PGM
+
+             DCL        VAR(&NPRM) TYPE(*CHAR) LEN(10)
+
+VOLTA:
+             SBMJOB     CMD(CALL PGM(DASHBBOSS/CURUSERS)) +
+                          JOB(MONIT_USER) JOBQ(QBATCH3)
+
+             DLYJOB     DLY(3600)
+             GOTO       CMDLBL(VOLTA)
+
+             ENDPGM

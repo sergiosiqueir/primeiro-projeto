@@ -1,0 +1,7 @@
+PGM
+
+QSH  CMD('/QOpenSys/etc/openssh_password_script_boss.sh')
+
+QSH  CMD('exec /QOpenSys/usr/bin/ksh -c "/home/boss/batch_sftp_script.sh"')
+
+ENDPGM

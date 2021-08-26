@@ -1,0 +1,6 @@
+PGM
+             QSH        CMD('/QOpenSys/bin/sftp -vv -b +
+                          /home/sftpboss/batch_sftp.sh +
+                          sftpboss@10.128.34.12 2> +
+                          /home/sftpboss/batch_sftp.log')
+ENDPGM

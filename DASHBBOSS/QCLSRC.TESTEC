@@ -1,0 +1,12 @@
+             PGM
+
+            DCL        VAR(&JOB) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&USER) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&NBR) TYPE(*CHAR) LEN(6)
+
+ JOB:        RTVJOBA    JOB(&JOB) USER(&USER) NBR(&NBR)
+
+             STRQMQRY   QMQRY(DASHBBOSS/TESTE) OUTPUT(*) +
+                          SETVAR((USER &USER) (JOB &JOB) (NBR &NBR))
+
+             ENDPGM

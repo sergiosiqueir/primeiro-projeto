@@ -1,0 +1,37 @@
+PGM        PARM(&FILIAL &DIR &SCRIPT)
+
+DCL        VAR(&FILIAL) TYPE(*CHAR) LEN(4)
+DCL        VAR(&DIR) TYPE(*CHAR) LEN(10)
+DCL        VAR(&SCRIPT) TYPE(*CHAR) LEN(12)
+DCL        VAR(&BCO) TYPE(*CHAR) LEN(1) VALUE(' ')
+DCL        VAR(&CMD) TYPE(*CHAR) LEN(200)
+DCL        VAR(&HOMEDIR) TYPE(*CHAR) LEN(30) VALUE('/home/sftpboss/')
+DCL        VAR(&SH) TYPE(*CHAR) LEN(60)
+DCL        VAR(&SFTP) TYPE(*CHAR) LEN(30) +
+                      VALUE('/QOpenSys/bin/sftp -vv -b ')
+DCL        VAR(&SFTP2) TYPE(*CHAR) LEN(30) VALUE(' +
+                          sftpboss@10.128.34.12')
+DCL        VAR(&SFTPLOG) TYPE(*CHAR) LEN(35) VALUE(' +
+                          >/home/sftpboss/batch_sftp.log')
+DCL        VAR(&SFTPLOG2) TYPE(*CHAR) LEN(45) VALUE(' +
+                          2>/home/sftpboss/batch_sftp_stdout2.log')
+
+             CHGVAR     VAR(&SH) VALUE(&HOMEDIR)
+             CHGVAR     VAR(&SH) VALUE(%TRIMR(&SH) *TCAT &DIR)
+             CHGVAR     VAR(&SH) VALUE(%TRIMR(&SH) *TCAT '/')
+             CHGVAR     VAR(&SH) VALUE(%TRIMR(&SH) *TCAT &SCRIPT)
+             CHGVAR     VAR(&SH)  VALUE(&BCO *CAT %TRIMR(&SH))
+             CHGVAR     VAR(&CMD) VALUE(&SFTP *TCAT &BCO *TCAT &SH)
+             CHGVAR     VAR(&CMD) VALUE(%TRIMR(&CMD) *TCAT ' ' *TCAT +
+                          &SFTP2)
+             CHGVAR     VAR(&CMD) VALUE(%TRIMR(&CMD) *TCAT ' ' +
+                        *TCAT &SFTPLOG *TCAT ' '               +
+                        *TCAT &SFTPLOG2 )
+             QSH        CMD(&CMD)
+             GOTO FIM
+ /*EXEMPLO QCMD:                                             */
+ /*          QSH        CMD('/QOpenSys/bin/sftp -vv -b +     */
+ /*                       /home/sftpboss/batch_sftp.sh +     */
+ /*                       sftpboss@10.128.34.12 2> +         */
+ /*                       /home/sftpboss/batch_sftp.log')    */
+ FIM:        ENDPGM

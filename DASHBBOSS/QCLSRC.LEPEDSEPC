@@ -1,0 +1,14 @@
+             PGM
+
+            DCL        VAR(&JOB) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&USER) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&NBR) TYPE(*CHAR) LEN(6)
+
+ JOB:        RTVJOBA    JOB(&JOB) USER(&USER) NBR(&NBR)
+
+             STRQMQRY   QMQRY(DASHBBOSS/PED_SEP_M) OUTPUT(*) +
+                          RDB(DBPMVS) USER(PR400) PASSWORD(PR400) +
+                          NAMING(*SQL) SETVAR((USER &USER) (JOB +
+                          &JOB) (NBR &NBR))
+
+             ENDPGM

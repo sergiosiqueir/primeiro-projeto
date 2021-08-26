@@ -1,0 +1,24 @@
+             PGM
+
+            DCL        VAR(&JOB) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&USER) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&NBR) TYPE(*CHAR) LEN(6)
+
+ JOB:        RTVJOBA    JOB(&JOB) USER(&USER) NBR(&NBR)
+
+    /***     CLRPFM     FILE(SERGIO/OBJD_TMP)         ***/
+             GOTO       CMDLBL(CMD2)
+ CMD1:       DSPOBJD OBJ(*LIBL/*ALL)                 +
+                     OBJTYPE(*ALL)                   +
+                     DETAIL(*SERVICE)                +
+                     OUTPUT(*OUTFILE)                +
+                     OUTFILE(SERGIO/OBJD_TMP)
+
+ CMD2:       RUNSQLSTM  SRCFILE(DASHBBOSS/QSQLSESS) +
+                          SRCMBR(OBJD_TMPXX) COMMIT(*NONE)
+             MONMSG     MSGID(CPF5033)
+             MONMSG     MSGID(CPF9999)
+             MONMSG     MSGID(CPA0701)
+             MONMSG     MSGID(SQL9010)
+
+             ENDPGM

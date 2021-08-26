@@ -1,0 +1,24 @@
+             PGM
+
+            DCL        VAR(&JOB) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&USER) TYPE(*CHAR) LEN(10)
+            DCL        VAR(&NBR) TYPE(*CHAR) LEN(6)
+
+ JOB:        RTVJOBA    JOB(&JOB) USER(&USER) NBR(&NBR)
+
+             WRKACTJOB  OUTPUT(*PRINT)
+
+             CRTPF      FILE(QTEMP/ACTJOB02) +
+                          SRCFILE(LIBBAHIA/QDDSSRC) +
+                          SRCMBR(ACTJOB02) OPTION(*SECLVL *NOSOURCE +
+                          *NOLIST) SIZE(*NOMAX)
+             MONMSG     MSGID(CPF5813)
+             MONMSG     MSGID(CPF7302)
+
+             CPYSPLF    FILE(QPDSPAJB) TOFILE(QTEMP/ACTJOB02) +
+                          JOB(&NBR/&USER/&JOB) SPLNBR(*LAST)
+
+             RUNSQLSTM  SRCFILE(DASHBBOSS/QSQLSESS) +
+                          SRCMBR(CURUSERS_2) COMMIT(*NONE)
+
+             ENDPGM

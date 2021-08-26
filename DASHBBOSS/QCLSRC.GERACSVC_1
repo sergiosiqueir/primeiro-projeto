@@ -1,0 +1,132 @@
+             PGM        PARM(&FILIAL)
+
+             DCL        VAR(&FILIAL) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&LEN) TYPE(*DEC) LEN(15 5) VALUE(500)
+             DCL        VAR(&MNU)  TYPE(*CHAR) LEN(10)
+             DCL        VAR(&FILE)  TYPE(*CHAR) LEN(10) VALUE('QPQXPRTF')
+             DCL        VAR(&JOBINIC) TYPE(*CHAR) LEN(10) VALUE('SFTP')
+             DCL        VAR(&JOBN) TYPE(*CHAR) LEN(10)
+
+             DCL        VAR(&DIR1) TYPE(*CHAR) LEN(10) VALUE('r16adir')
+             DCL        VAR(&DIR2) TYPE(*CHAR) LEN(10) VALUE('etapdir')
+
+             DCL        VAR(&SCRIPT1) TYPE(*CHAR) LEN(12) +
+                          VALUE('r16axxxx.sh')
+             DCL        VAR(&SCRIPT2) TYPE(*CHAR) LEN(12) +
+                          VALUE('etapxxxx.sh')
+
+             DCL        VAR(&EMAILPARAM) TYPE(*CHAR) LEN(50)
+             DCL        VAR(&VAR1) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&VAR2) TYPE(*CHAR) LEN(10)
+
+             DCL        VAR(&MNUOPT)  TYPE(*CHAR) LEN(2)
+             DCL        VAR(&JOB)   TYPE(*CHAR) LEN(10)
+             DCL        VAR(&USER)  TYPE(*CHAR) LEN(10)
+             DCL        VAR(&NBR)   TYPE(*CHAR) LEN(6)
+             DCL        VAR(&DOC)   TYPE(*CHAR) LEN(12)
+             DCL        VAR(&DOC1)   TYPE(*CHAR) LEN(12)  VALUE('R16A')
+             DCL        VAR(&DOC2)   TYPE(*CHAR) LEN(12)  VALUE('ETAP')
+             DCL        VAR(&TXT)   TYPE(*CHAR) LEN(4) VALUE('.CSV')
+             DCLF       FILE(EMAILCMDPF) RCDFMT(RCMDPF) +
+                          OPNID(EMAILCMDPF)
+             DCLF       FILE(EMAILDSP) RCDFMT(USERMAIL) OPNID(EMAILDSP)
+             DCL        VAR(&LIBRARY1) TYPE(*CHAR) LEN(11) +
+                          VALUE('PSI62')
+
+             DCL        VAR(&LIBRARY2) TYPE(*CHAR) LEN(11) +
+                          VALUE('MOD62')
+
+             MONMSG     MSGID(CPF2208)
+
+             CHGVAR     VAR(%SST(&LIBRARY1 6 4)) VALUE(&FILIAL)
+             CHGVAR     VAR(%SST(&LIBRARY2 6 4)) VALUE(&FILIAL)
+
+             CHGVAR     VAR(%SST(&SCRIPT1 5 4)) VALUE(&FILIAL)
+             CHGVAR     VAR(%SST(&SCRIPT2 5 4)) VALUE(&FILIAL)
+
+             ADDLIBLE   LIB(&LIBRARY1)
+             MONMSG     MSGID(CPF2104)
+             MONMSG     MSGID(CPF2103)
+
+             ADDLIBLE   LIB(&LIBRARY2)
+             MONMSG     MSGID(CPF2104)
+             MONMSG     MSGID(CPF2103)
+
+             CHGVAR     VAR(%SST(&DOC1 5 4)) VALUE(&FILIAL)
+             CHGVAR     VAR(%SST(&DOC2 5 4)) VALUE(&FILIAL)
+             RTVJOBA    JOB(&JOB) USER(&USER) NBR(&NBR)
+
+             OVRPRTF    FILE(QPQXPRTF) PAGESIZE(*N 378)
+ QUERY1:     STRQMQRY   QMQRY(DASHBBOSS/R020) OUTPUT(*PRINT)
+
+
+ STARTCOPY:  DLTF       FILE(QTEMP/EMAILQRYPF)
+             MONMSG     MSGID(CPF2105)
+
+             CRTPF      FILE(QTEMP/EMAILQRYPF) +
+                          SRCFILE(*LIBL/QDDSSRC) SRCMBR(EMAILQRYPF) +
+                          OPTION(*NOSECLVL *NOSOURCE *NOLIST) +
+                          SIZE(*NOMAX) AUT(*ALL)
+
+             CPYSPLF    FILE(&FILE) TOFILE(QTEMP/EMAILQRYPF) +
+                            JOB(&NBR/&USER/&JOB) SPLNBR(*LAST)
+
+             CHGVAR     VAR(&DOC) VALUE(&DOC1 *TCAT &TXT)
+
+             CPYTOPCD   FROMFILE(*LIBL/EMAILQRYPF) TOFLR(SFTP) +
+                            FROMMBR(*FIRST) TODOC(&DOC) REPLACE(*YES)
+
+             CHGVAR     VAR(%SST(&SCRIPT1 5 4)) VALUE(&FILIAL)
+             CHGVAR     VAR(%SST(&SCRIPT2 5 4)) VALUE(&FILIAL)
+             CHGVAR     VAR(&JOBN) VALUE(%TRIMR(&JOBINIC) *TCAT '1A')
+             CHGVAR     VAR(&JOBN) VALUE(%TRIMR(&JOBN) *tcat &FILIAL)
+
+ SFTP1:      SBMJOB     CMD(CALL PGM(DASHBBOSS/SFTPC) PARM(&FILIAL +
+                          &DIR1 &SCRIPT1)) JOB(&JOBN) JOBQ(QBATCH6) +
+                          USER(SFTPBOSS) LOG(4 0 *SECLVL)
+
+             DLTF       FILE(QTEMP/EMAILQRYPF)
+             MONMSG     MSGID(CFC0000)
+
+             DLTSPLF    FILE(QPQXPRTF) SPLNBR(*LAST)
+ ENDCOPY:    MONMSG     MSGID(CFC0000)
+
+ QUERY2:     STRQMQRY   QMQRY(DASHBBOSS/ETANEWRCSV) OUTPUT(*PRINT)
+
+
+ STARTCOPY2: DLTF       FILE(QTEMP/EMAILQRYPF)
+             MONMSG     MSGID(CPF2105)
+
+             CRTPF      FILE(QTEMP/EMAILQRYPF) +
+                          SRCFILE(*LIBL/QDDSSRC) SRCMBR(EMAILQRYPF) +
+                          OPTION(*NOSECLVL *NOSOURCE *NOLIST) +
+                          SIZE(*NOMAX) AUT(*ALL)
+
+             CPYSPLF    FILE(&FILE) TOFILE(QTEMP/EMAILQRYPF) +
+                            JOB(&NBR/&USER/&JOB) SPLNBR(*LAST)
+
+             CHGVAR     VAR(&DOC) VALUE(&DOC2 *TCAT &TXT)
+
+             CPYTOPCD   FROMFILE(*LIBL/EMAILQRYPF) TOFLR(SFTP) +
+                            FROMMBR(*FIRST) TODOC(&DOC) REPLACE(*YES)
+
+             CHGVAR     VAR(&JOBN) VALUE(%TRIMR(&JOBINIC) *TCAT '2A')
+             CHGVAR     VAR(&JOBN) VALUE(%TRIMR(&JOBN) *tcat &FILIAL)
+ SFTP2:      SBMJOB     CMD(CALL PGM(DASHBBOSS/SFTPC) PARM(&FILIAL +
+                          &DIR2 &SCRIPT2)) JOB(&JOBN) JOBQ(QBATCH6) +
+                          USER(SFTPBOSS) LOG(4 0 *SECLVL)
+
+             DLTF       FILE(QTEMP/EMAILQRYPF)
+             MONMSG     MSGID(CFC0000)
+
+             DLTSPLF    FILE(QPQXPRTF) SPLNBR(*LAST)
+ ENDCOPY2:   MONMSG     MSGID(CFC0000)
+             RCLRSC     LVL(*CALLER)
+
+             RMVLIBLE   LIB(&LIBRARY1)
+             MONMSG     MSGID(CPF2110)
+
+             RMVLIBLE   LIB(&LIBRARY2)
+             MONMSG     MSGID(CPF2110)
+
+ FIM:        ENDPGM
