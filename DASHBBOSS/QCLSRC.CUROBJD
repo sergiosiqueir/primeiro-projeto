@@ -4,7 +4,9 @@
             DCL        VAR(&USER) TYPE(*CHAR) LEN(10)
             DCL        VAR(&NBR) TYPE(*CHAR) LEN(6)
 
- JOB:        RTVJOBA    JOB(&JOB) USER(&USER) NBR(&NBR)
+            DCL        VAR(&USER2) TYPE(*CHAR) LEN(10)
+
+ JOB:        RTVJOBA    JOB(&JOB) USER(&USER2) NBR(&NBR)
 
     /***     CLRPFM     FILE(DASHBBOSS/OBJD_TMP)         ***/
 
